@@ -20,7 +20,7 @@ pomocna equ 0x70;
 ;Glavni dio program
 program
     ;RD0 RD1 su ulazni pinovi
-    bsf BSR ,BSR0 ; BANK1
+    banksel TRISD; BANK1
     movlw 0x03;
     movwf TRISD;
     ;PORTB su izlazni pinovi za diode
@@ -32,8 +32,7 @@ program
     ;signal sa TTL je od 0,01 do 1kHz tako da period uzorkovanja 
     ;<1 ms
     
-    bcf BSR,BSR0;
-    bsf BSR,BSR1; Banka 2
+    banksel LATB; Banka 2
     bsf LATD,0x03;
     movlw 0x00;
     movwf LATB; brojac=0
@@ -48,27 +47,35 @@ petlja
     
     
 broji
-    btfss LATD,0x00; if RD0!=0
+    banksel PORTD;
+    btfss PORTD,0x00; if RD0!=0
     goto broji1;TODO
-    btfsc LATD,0x02; if RD3=0
+    btfsc PORTD,0x02; if RD3=0
     goto broji2;
     call brojac
+    banksel LATD;
     bsf LATD, 0x02  ;RD3=1
 broji2
     return
 broji1
-    bcf LATD, 0x02  ;RD3=0
+    banksel LATD;
+    bcf PORTD, 0x02  ;RD3=0
     goto broji2
     
 brojac
     call if135or0
-    btfss LATD,0x01; if RD1!=1
+    banksel PORTD;
+    movf PORTD,0;
+    banksel LATB;
+    movwf pomocna
+    btfss pomocna,0x01; if RD1!=1
     incf LATB; brojac++
-    btfsc LATD,0x01; if	RD2!=0
+    btfsc pomocna,0x01; if	RD2!=0
     decf LATB; brojac--
     return
     
 if135or0
+    banksel LATB;
     movlw b'01111000'; if 135=brojac
     xorwf LATB,0;
     movwf pomocna;

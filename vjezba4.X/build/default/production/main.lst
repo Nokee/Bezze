@@ -1,4 +1,4 @@
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE  1
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -37,7 +37,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00020 ;Glavni dio program
 0005                  00021 program
                       00022     ;RD0 RD1 su ulazni pinovi
-0005   1408           00023     bsf BSR ,BSR0 ; BANK1
+0005   0021           00023     banksel TRISD; BANK1
 0006   3003           00024     movlw 0x03;
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 0007   008F           00025     movwf TRISD;
@@ -52,103 +52,105 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
                       00032     ;signal sa TTL je od 0,01 do 1kHz tako da period uzorkovanja 
                       00033     ;<1 ms
                       00034     
-000C   1008           00035     bcf BSR,BSR0;
-000D   1488           00036     bsf BSR,BSR1; Banka 2
+000C   0022           00035     banksel LATB; Banka 2
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-000E   158F           00037     bsf LATD,0x03;
-000F   3000           00038     movlw 0x00;
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE  2
+000D   158F           00036     bsf LATD,0x03;
+000E   3000           00037     movlw 0x00;
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0010   008D           00039     movwf LATB; brojac=0
-                      00040 
-0011                  00041 petlja
-                      00042     
-0011   2???           00043     call broji ;
-                      00044 
-                      00045     
-0012   2???           00046     goto petlja
+000F   008D           00038     movwf LATB; brojac=0
+                      00039 
+0010                  00040 petlja
+                      00041     
+0010   2???           00042     call broji ;
+                      00043 
+                      00044     
+0011   2???           00045     goto petlja
+                      00046     
                       00047     
                       00048     
-                      00049     
-0013                  00050 broji
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0013   1C0F           00051     btfss LATD,0x00; if RD0!=0
+0012                  00049 broji
+0012   0020           00050     banksel PORTD;
+0013   1C0F           00051     btfss PORTD,0x00; if RD0!=0
 0014   2???           00052     goto broji1;TODO
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0015   190F           00053     btfsc LATD,0x02; if RD3=0
+0015   190F           00053     btfsc PORTD,0x02; if RD3=0
 0016   2???           00054     goto broji2;
 0017   2???           00055     call brojac
+0018   0022           00056     banksel LATD;
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0018   150F           00056     bsf LATD, 0x02  ;RD3=1
-0019                  00057 broji2
-0019   0008           00058     return
-001A                  00059 broji1
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-001A   110F           00060     bcf LATD, 0x02  ;RD3=0
-001B   2???           00061     goto broji2
-                      00062     
-001C                  00063 brojac
-001C   2???           00064     call if135or0
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-001D   1C8F           00065     btfss LATD,0x01; if RD1!=1
+0019   150F           00057     bsf LATD, 0x02  ;RD3=1
+001A                  00058 broji2
+001A   0008           00059     return
+001B                  00060 broji1
+001B   0022           00061     banksel LATD;
+001C   110F           00062     bcf PORTD, 0x02  ;RD3=0
+001D   2???           00063     goto broji2
+                      00064     
+001E                  00065 brojac
+001E   2???           00066     call if135or0
+001F   0020           00067     banksel PORTD;
+0020   080F           00068     movf PORTD,0;
+0021   0022           00069     banksel LATB;
+0022   00F0           00070     movwf pomocna
+0023   1CF0           00071     btfss pomocna,0x01; if RD1!=1
 Message[305]: Using default destination of 1 (file).
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-001E   0A8D           00066     incf LATB; brojac++
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-001F   188F           00067     btfsc LATD,0x01; if RD2!=0
+0024   0A8D           00072     incf LATB; brojac++
+0025   18F0           00073     btfsc pomocna,0x01; if      RD2!=0
 Message[305]: Using default destination of 1 (file).
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0020   038D           00068     decf LATB; brojac--
-0021   0008           00069     return
-                      00070     
-0022                  00071 if135or0
-0022   3078           00072     movlw b'01111000'; if 135=brojac
+0026   038D           00074     decf LATB; brojac--
+0027   0008           00075     return
+                      00076     
+0028                  00077 if135or0
+0028   0022           00078     banksel LATB;
+0029   3078           00079     movlw b'01111000'; if 135=brojac
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0023   060D           00073     xorwf LATB,0;
-0024   00F0           00074     movwf pomocna;
+002A   060D           00080     xorwf LATB,0;
+002B   00F0           00081     movwf pomocna;
 Message[305]: Using default destination of 1 (file).
-0025   0FF0           00075     incfsz pomocna;
-0026   2???           00076     goto if0
-                      00077     
-0027   3000           00078     movlw 0x00;
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE  3
+002C   0FF0           00082     incfsz pomocna;
+002D   2???           00083     goto if0
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
+                      00084     
+002E   3000           00085     movlw 0x00;
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0028   008D           00079     movwf LATB; brojac=0
-                      00080     
-0029                  00081 if0
-0029   30FF           00082     movlw b'11111111';if 0=brojac
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-002A   060D           00083     xorwf LATB,0;
-002B   00F0           00084     movwf pomocna;
-Message[305]: Using default destination of 1 (file).
-002C   0FF0           00085     incfsz pomocna;
-002D   2???           00086     goto fi
+002F   008D           00086     movwf LATB; brojac=0
                       00087     
-002E   3080           00088     movlw 0x80;
+0030                  00088 if0
+0030   30FF           00089     movlw b'11111111';if 0=brojac
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-002F   008D           00089     movwf LATB; brojac=135    
-0030                  00090 fi
-0030   3080           00091     movlw 0x80
+0031   060D           00090     xorwf LATB,0;
+0032   00F0           00091     movwf pomocna;
+Message[305]: Using default destination of 1 (file).
+0033   0FF0           00092     incfsz pomocna;
+0034   2???           00093     goto fi
+                      00094     
+0035   3080           00095     movlw 0x80;
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0031   008E           00092     movwf LATC;
-0032   3000           00093     movlw 0x00
+0036   008D           00096     movwf LATB; brojac=135    
+0037                  00097 fi
+0037   3080           00098     movlw 0x80
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0033   008E           00094     movwf LATC;
-                      00095     
-0034   0008           00096     return
-                      00097     
-09E2 1CFF             00098     END
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE  4
+0038   008E           00099     movwf LATC;
+0039   3000           00100     movlw 0x00
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+003A   008E           00101     movwf LATC;
+                      00102     
+003B   0008           00103     return
+                      00104     
+09E2 1CFF             00105     END
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE  4
 
 
 SYMBOL TABLE
@@ -207,7 +209,7 @@ ANSELA                            0000018C
 ANSELB                            0000018D
 ANSELD                            0000018F
 ANSELE                            00000190
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE  5
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE  5
 
 
 SYMBOL TABLE
@@ -266,7 +268,7 @@ C2POL                             00000004
 C2SP                              00000002
 C2SYNC                            00000000
 C2TSEL0                           00000002
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE  6
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE  6
 
 
 SYMBOL TABLE
@@ -325,7 +327,7 @@ CCP4M1                            00000001
 CCP4M2                            00000002
 CCP4M3                            00000003
 CCP5CON                           0000031E
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE  7
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE  7
 
 
 SYMBOL TABLE
@@ -384,7 +386,7 @@ CREN                              00000004
 CS0                               00000002
 CS1                               00000003
 CSRC                              00000007
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE  8
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE  8
 
 
 SYMBOL TABLE
@@ -443,7 +445,7 @@ FSR0L_SHAD                        00000FE8
 FSR1                              00000006
 FSR1H                             00000007
 FSR1H_SHAD                        00000FEB
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE  9
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE  9
 
 
 SYMBOL TABLE
@@ -502,7 +504,7 @@ IRCF2                             00000005
 IRCF3                             00000006
 LATA                              0000010C
 LATA0                             00000000
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 10
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 10
 
 
 SYMBOL TABLE
@@ -561,7 +563,7 @@ LCDDATA2                          000007A2
 LCDDATA3                          000007A3
 LCDDATA4                          000007A4
 LCDDATA5                          000007A5
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 11
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 11
 
 
 SYMBOL TABLE
@@ -620,7 +622,7 @@ OSFIF                             00000007
 OSTS                              00000005
 P                                 00000004
 P1DC0                             00000000
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 12
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 12
 
 
 SYMBOL TABLE
@@ -679,7 +681,7 @@ PR2                               0000001B
 PR4                               00000416
 PR6                               0000041D
 PS0                               00000000
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 13
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 13
 
 
 SYMBOL TABLE
@@ -738,7 +740,7 @@ RCREG                             00000199
 RCSTA                             0000019D
 RD                                00000000
 RD0                               00000000
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 14
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 14
 
 
 SYMBOL TABLE
@@ -797,7 +799,7 @@ SEG0COM2                          00000000
 SEG0COM3                          00000000
 SEG10COM0                         00000002
 SEG10COM1                         00000002
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 15
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 15
 
 
 SYMBOL TABLE
@@ -856,7 +858,7 @@ SEG21COM3                         00000005
 SEG22COM0                         00000006
 SEG22COM1                         00000006
 SEG22COM2                         00000006
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 16
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 16
 
 
 SYMBOL TABLE
@@ -915,7 +917,7 @@ SRCLK0                            00000004
 SRCLK1                            00000005
 SRCLK2                            00000006
 SRCON0                            0000011A
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 17
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 17
 
 
 SYMBOL TABLE
@@ -974,7 +976,7 @@ STR3B                             00000001
 STR3C                             00000002
 STR3D                             00000003
 STR3SYNC                          00000004
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 18
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 18
 
 
 SYMBOL TABLE
@@ -1033,7 +1035,7 @@ TMR1CS0                           00000006
 TMR1CS1                           00000007
 TMR1GE                            00000007
 TMR1GIE                           00000007
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 19
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 19
 
 
 SYMBOL TABLE
@@ -1092,7 +1094,7 @@ TRISD1                            00000001
 TRISD2                            00000002
 TRISD3                            00000003
 TRISD4                            00000004
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 20
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 20
 
 
 SYMBOL TABLE
@@ -1151,7 +1153,7 @@ WPUE3                             00000003
 WR                                00000001
 WREG                              00000009
 WREG_SHAD                         00000FE5
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 21
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 21
 
 
 SYMBOL TABLE
@@ -1210,7 +1212,7 @@ _VCAPEN_RA0                       00003FCF
 _VCAPEN_RA5                       00003FDF
 _VCAPEN_RA6                       00003FEF
 _WDTE_NSLEEP                      00003FF7
-MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-5-2015  23:36:22         PAGE 22
+MPASM 5.63  /HOME/NOKE/MPLABXPROJECTS/VJEZBA   11-6-2015  0:08:37         PAGE 22
 
 
 SYMBOL TABLE
@@ -1224,19 +1226,19 @@ _WRT_BOOT                         00003FFE
 _WRT_HALF                         00003FFD
 _WRT_OFF                          00003FFF
 __16F1939                         00000001
-brojac                            0000001C
-broji                             00000013
-broji1                            0000001A
-broji2                            00000019
-fi                                00000030
-if0                               00000029
-if135or0                          00000022
-petlja                            00000011
+brojac                            0000001E
+broji                             00000012
+broji1                            0000001B
+broji2                            0000001A
+fi                                00000037
+if0                               00000030
+if135or0                          00000028
+petlja                            00000010
 pomocna                           00000070
 program                           00000005
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed
-Messages :    23 reported,     0 suppressed
+Messages :    18 reported,     0 suppressed
 
 
