@@ -1,0 +1,45 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Wed Nov  4 17:27:11 2015
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000004    program   0x00003c
+.config_8007_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x008007    program   0x000002
+.config_8008_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x008008    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x000021      
+                            0x008007    0x008008      
+            35 out of 16647 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                       L1   0x00001b    program     static /home/noke/MPLABXProjects/vjezba3.X/main.asm
+                       L2   0x00001d    program     static /home/noke/MPLABXProjects/vjezba3.X/main.asm
+                   Petlja   0x00000b    program     static /home/noke/MPLABXProjects/vjezba3.X/main.asm
+                  Program   0x000005    program     static /home/noke/MPLABXProjects/vjezba3.X/main.asm
+                  milisec   0x000019    program     static /home/noke/MPLABXProjects/vjezba3.X/main.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  Program   0x000005    program     static /home/noke/MPLABXProjects/vjezba3.X/main.asm
+                   Petlja   0x00000b    program     static /home/noke/MPLABXProjects/vjezba3.X/main.asm
+                  milisec   0x000019    program     static /home/noke/MPLABXProjects/vjezba3.X/main.asm
+                       L1   0x00001b    program     static /home/noke/MPLABXProjects/vjezba3.X/main.asm
+                       L2   0x00001d    program     static /home/noke/MPLABXProjects/vjezba3.X/main.asm
+
+

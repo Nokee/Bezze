@@ -1,0 +1,53 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Thu Nov  5 23:36:32 2015
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000004    program   0x000062
+.config_8007_BUILD/DEFAULT/DEBUG/MAIN.O       code   0x008007    program   0x000002
+.config_8008_BUILD/DEFAULT/DEBUG/MAIN.O       code   0x008008    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x000034      
+                            0x008007    0x008008      
+            54 out of 16647 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   brojac   0x00001c    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                    broji   0x000013    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                   broji1   0x00001a    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                   broji2   0x000019    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                       fi   0x000030    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                      if0   0x000029    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                 if135or0   0x000022    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                   petlja   0x000011    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                  program   0x000005    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  program   0x000005    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                   petlja   0x000011    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                    broji   0x000013    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                   broji2   0x000019    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                   broji1   0x00001a    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                   brojac   0x00001c    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                 if135or0   0x000022    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                      if0   0x000029    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+                       fi   0x000030    program     static /home/noke/MPLABXProjects/vjezba4.X/main.asm
+
+
