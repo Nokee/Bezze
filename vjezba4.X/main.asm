@@ -75,6 +75,9 @@ brojac
     return
     
 if135or0
+    banksel PORTD;
+    btfsc PORTD,RD1;
+    goto if0
     banksel LATB;
     movlw b'01111000'; if 135=brojac
     xorwf LATB,0;
@@ -86,20 +89,24 @@ if135or0
     movwf LATB; brojac=0
     
 if0
+    banksel PORTD;
+    btfss PORTD,RD1;
+    goto fii
+    banksel LATB;
     movlw b'11111111';if 0=brojac
     xorwf LATB,0;
     movwf pomocna;
     incfsz pomocna;
     goto fi
     
-    movlw 0x80;
+    movlw 0x87;
     movwf LATB; brojac=135    
 fi
-    movlw 0x80
+    movlw 0x84;
     movwf LATC;
     movlw 0x00
     movwf LATC;
-    
+fii    
     return
     
     END
